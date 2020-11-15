@@ -14,7 +14,7 @@ if [[ -z "$COMMIT" ]] ; then
     exit 1
 fi
 
-ODE_DIR=$(cd $SCRIPT_DIR/..; pwd)
+CODE_DIR=$(cd $SCRIPT_DIR/..; pwd)
 echo $CODE_DIR
 docker run --rm -v $HOME/.m2:/root/.m2 -v $CODE_DIR:/usr/src/mymaven -w /usr/src/mymaven maven:3.2-jdk-8 mvn -DskipTests package
 
