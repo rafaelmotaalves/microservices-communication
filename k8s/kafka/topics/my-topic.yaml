@@ -3,7 +3,8 @@ kind: KafkaTopic
 metadata:
   name: my-topic
   labels:
-    strimzi.io/cluster: "my-cluster"
+    strimzi.io/cluster: "cluster"
+  namespace: comm-infra
 spec:
-  partitions: 3
+  partitions: 10
   replicas: 1
