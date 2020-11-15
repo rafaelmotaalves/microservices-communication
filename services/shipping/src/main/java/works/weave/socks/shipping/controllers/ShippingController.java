@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import works.weave.socks.shipping.entities.HealthCheck;
 import works.weave.socks.shipping.entities.Shipment;
 
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.RoutingKafkaTemplate;
+import org.springframework.kafka.support.SendResult;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,8 +24,11 @@ import java.util.Map;
 @RestController
 public class ShippingController {
 
+    //@Autowired
+    //RabbitTemplate rabbitTemplate;
     @Autowired
-    RabbitTemplate rabbitTemplate;
+	KafkaTemplate<String, Shipment> shipmentKafkaTemplate;
+
 
     @RequestMapping(value = "/shipping", method = RequestMethod.GET)
     public String getShipping() {
@@ -40,7 +47,8 @@ public class ShippingController {
     Shipment postShipping(@RequestBody Shipment shipment) {
         System.out.println("Adding shipment to queue...");
         try {
-            rabbitTemplate.convertAndSend("shipping-task", shipment);
+            shipmentKafkaTemplate.send("shipping-task", shipment);
+            //rabbitTemplate.convertAndSend("shipping-task", shipment);
         } catch (Exception e) {
             System.out.println("Unable to add to queue (the queue is probably down). Accepting anyway. Don't do this " +
                     "for real!");
