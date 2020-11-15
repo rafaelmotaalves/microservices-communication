@@ -39,9 +39,4 @@ class KafkaClassListener {
   void listen(Shipment shipment) {
 		System.out.println("Received shipment task: " + shipment.getName());
   }
-
-  @KafkaHandler(isDefault = true)
-  void listenDefault(Object object) {
-    LOG.info("KafkaHandler[Default] {}", object);
-  }
 }
