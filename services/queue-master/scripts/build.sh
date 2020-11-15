@@ -14,18 +14,17 @@ if [[ -z "$COMMIT" ]] ; then
     exit 1
 fi
 
-if [[ "$(uname)" == "Darwin" ]]; then
-    DOCKER_CMD=docker
-else
-    DOCKER_CMD="sudo docker"
-fi
-CODE_DIR=$(cd $SCRIPT_DIR/..; pwd)
+ODE_DIR=$(cd $SCRIPT_DIR/..; pwd)
 echo $CODE_DIR
-$DOCKER_CMD run --rm -v $HOME/.m2:/root/.m2 -v $CODE_DIR:/usr/src/mymaven -w /usr/src/mymaven maven:3.2-jdk-8 mvn -DskipTests package
+docker run --rm -v $HOME/.m2:/root/.m2 -v $CODE_DIR:/usr/src/mymaven -w /usr/src/mymaven maven:3.2-jdk-8 mvn -DskipTests package
 
 cp $CODE_DIR/target/*.jar $CODE_DIR/docker/$(basename $CODE_DIR)
 
+eval $(minikube docker-env)
+
 for m in ./docker/*/; do
     REPO=${GROUP}/$(basename $m)
-    $DOCKER_CMD build -t ${REPO}:${COMMIT} $CODE_DIR/$m;
+    docker build -t ${REPO}:${COMMIT} $CODE_DIR/$m;
 done;
+
+exit
