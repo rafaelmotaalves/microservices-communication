@@ -65,22 +65,22 @@ public class ShippingController {
         List<HealthCheck> healthChecks = new ArrayList<HealthCheck>();
         Date dateNow = Calendar.getInstance().getTime();
 
-        HealthCheck rabbitmq = new HealthCheck("shipping-rabbitmq", "OK", dateNow);
+        // HealthCheck rabbitmq = new HealthCheck("shipping-rabbitmq", "OK", dateNow);
         HealthCheck app = new HealthCheck("shipping", "OK", dateNow);
 
-        try {
-            this.rabbitTemplate.execute(new ChannelCallback<String>() {
-                @Override
-                public String doInRabbit(Channel channel) throws Exception {
-                    Map<String, Object> serverProperties = channel.getConnection().getServerProperties();
-                    return serverProperties.get("version").toString();
-                }
-            });
-        } catch ( AmqpException e ) {
-            rabbitmq.setStatus("err");
-        }
+        // try {
+        //     this.rabbitTemplate.execute(new ChannelCallback<String>() {
+        //         @Override
+        //         public String doInRabbit(Channel channel) throws Exception {
+        //             Map<String, Object> serverProperties = channel.getConnection().getServerProperties();
+        //             return serverProperties.get("version").toString();
+        //         }
+        //     });
+        // } catch ( AmqpException e ) {
+        //     rabbitmq.setStatus("err");
+        // }
 
-        healthChecks.add(rabbitmq);
+        // healthChecks.add(rabbitmq);
         healthChecks.add(app);
 
         map.put("health", healthChecks);

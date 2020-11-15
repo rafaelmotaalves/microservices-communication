@@ -9,18 +9,18 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
+import works.weave.socks.shipping.entities.Shipment;
+
 
 @Component
 class KafkaSender {
 	private KafkaTemplate<String, String> kafkaTemplate;
-	private RoutingKafkaTemplate routingKafkaTemplate;
 	private KafkaTemplate<String, Shipment> shipmentKafkaTemplate;
 
 	@Autowired
-	KafkaSenderExample(KafkaTemplate<String, String> kafkaTemplate, RoutingKafkaTemplate routingKafkaTemplate,
-			KafkaTemplate<String, User> shipmentKafkaTemplate) {
+	KafkaSender(KafkaTemplate<String, String> kafkaTemplate,
+			KafkaTemplate<String, Shipment> shipmentKafkaTemplate) {
 		this.kafkaTemplate = kafkaTemplate;
-		this.routingKafkaTemplate = routingKafkaTemplate;
 		this.shipmentKafkaTemplate = shipmentKafkaTemplate;
 	}
 
