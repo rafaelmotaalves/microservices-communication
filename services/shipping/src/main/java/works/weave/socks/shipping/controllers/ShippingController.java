@@ -1,9 +1,5 @@
 package works.weave.socks.shipping.controllers;
 
-import com.rabbitmq.client.Channel;
-import org.springframework.amqp.AmqpException;
-import org.springframework.amqp.rabbit.core.ChannelCallback;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
