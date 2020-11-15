@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: queue-master
-        image: weaveworksdemos/queue-master:0.3.1
+        image: comm-infra/queue-master:1.0
         env:
          - name: ZIPKIN
            value: zipkin.jaeger.svc.cluster.local
