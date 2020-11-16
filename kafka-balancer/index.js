@@ -4,7 +4,8 @@ const fs = require("fs")
 const KafkaWrapper = require('./lib/kafkaWrapper')
 
 APP_NAME = "kafka-balancer";
-BOOTSTRAP_SERVER = '192.168.49.2:32575';
+BOOTSTRAP_SERVER = process.env.BOOTSTRAP_SERVER;
+TOPIC_NAME = process.env.TOPIC_NAME;
 
 const kafka = new Kafka({
     clientId: APP_NAME,
@@ -12,13 +13,13 @@ const kafka = new Kafka({
 });
 
 (async function () {
-    const kafkaWrapper = new KafkaWrapper(kafka, "my-topic")
+    const kafkaWrapper = new KafkaWrapper(kafka, TOPIC_NAME)
     try {
         const brokers = await kafkaWrapper.getBrokers();
         const partitions = await kafkaWrapper.getPartitions();
     
         const partitionsReassignment = generateKafkaPartitionReassignment(brokers, partitions);
-        const reassignmentJson = generatePartitionReassignmentJson(partitionsReassignment, "my-topic")
+        const reassignmentJson = generatePartitionReassignmentJson(partitionsReassignment, TOPIC_NAME)
         
         if (reassignmentJson.partitions.length === 0) {
             console.log("Partition assignment is already optimal");
