@@ -27,7 +27,8 @@ const kafka = new Kafka({
         }
 
         fs.writeFileSync("/tmp/reassignment.json", JSON.stringify(reassignmentJson));
-        return new Promise((resolve, reject) => exec(`./kafka/bin/kafka-reassign-partitions.sh --bootstrap-server ${BOOTSTRAP_SERVER} --reassignment-json-file /tmp/reassignment.json --execute`, function(error, stdout, stderr) {
+        
+        const result = await new Promise((resolve, reject) => exec(`/bin/bash kafka/bin/kafka-reassign-partitions.sh --bootstrap-server ${BOOTSTRAP_SERVER} --reassignment-json-file /tmp/reassignment.json --execute` , function(error, stdout, stderr) {
             if (error) {
                 return reject(error);
             }
@@ -36,6 +37,7 @@ const kafka = new Kafka({
             }
             return resolve(stdout);
         }));
+        console.log(result);
     } catch (err) {
         console.log(err)
     } finally {

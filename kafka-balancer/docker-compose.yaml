@@ -1,9 +1,11 @@
-version: "3.8"
+version: "3.3"
 services:
   balancer:
     build:
       context: .
       dockerfile: Dockerfile
     environment:
-      BOOTSTRAP_SERVER: "cluster-kafka-bootstrap:9092"
+      BOOTSTRAP_SERVER: "192.168.49.2:30962"
       TOPIC_NAME: "my-topic"
+    network_mode: "host"
+
