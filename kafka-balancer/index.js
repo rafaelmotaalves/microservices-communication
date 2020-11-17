@@ -6,7 +6,6 @@ const { reassignPartitions } = require('./lib/kafka-reassign-partititions');
 
 APP_NAME = "kafka-balancer";
 BOOTSTRAP_SERVER = process.env.BOOTSTRAP_SERVER;
-TOPIC_NAME = process.env.TOPIC_NAME;
 
 const kafka = new Kafka({
     clientId: APP_NAME,
@@ -14,17 +13,21 @@ const kafka = new Kafka({
 });
 
 (async function () {
-    const kafkaWrapper = new KafkaWrapper(kafka, TOPIC_NAME)
+    const kafkaWrapper = new KafkaWrapper(kafka);
 
     try {
-        const brokers = await kafkaWrapper.getBrokers();
-        const partitions = await kafkaWrapper.getPartitions();
+        const topics = await kafkaWrapper.getTopics();
 
-        const partitionsReassignment = balancePartitions(brokers, partitions);
+        for (let topic of topics) {
+          const brokers = await kafkaWrapper.getBrokers();
+          const partitions = await kafkaWrapper.getPartitions(topic);
+          console.log(partitions); 
+          const partitionsReassignment = balancePartitions(brokers, partitions);
+          console.log(partitionsReassignment);
+          const result = await reassignPartitions(BOOTSTRAP_SERVER, topic, partitionsReassignment);
 
-        const result = await reassignPartitions(BOOTSTRAP_SERVER, TOPIC_NAME, partitionsReassignment);
-
-        console.log(result);
+          console.log(result);
+        }
     } catch (err) {
         console.log(err)
     } finally {

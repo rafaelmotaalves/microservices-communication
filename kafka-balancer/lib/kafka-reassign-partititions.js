@@ -4,9 +4,12 @@ const { exec } = require('child_process');
 function reassignPartitions(boostrapServer, topicName, reassignments) {
     const reassignmentJson = generatePartitionReassignmentJson(reassignments, topicName);
 
-    fs.writeFileSync("/tmp/reassignment.json", JSON.stringify(reassignmentJson));
+    if (reassignmentJson.partitions.length > 0) {
+        fs.writeFileSync("/tmp/reassignment.json", JSON.stringify(reassignmentJson));
 
-    return executeKafkaScript(boostrapServer);
+        return executeKafkaScript(boostrapServer);
+    }
+    return null;
 }
 
 function generatePartitionReassignmentJson(partitionsReassignment, topicName) {

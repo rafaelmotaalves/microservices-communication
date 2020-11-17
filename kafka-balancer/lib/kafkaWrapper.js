@@ -1,7 +1,6 @@
 module.exports = class KafkaWrapper {
-    constructor(kafkaClient, topicName) {
+    constructor(kafkaClient) {
         this.admin = kafkaClient.admin();
-        this.topicName = topicName;
     }
 
     async getBrokers() {
@@ -10,10 +9,14 @@ module.exports = class KafkaWrapper {
         return clusterInfo.brokers;
     }
 
-    async getPartitions() {
-        const topicMetadata = await this.admin.fetchTopicMetadata({ topics: [this.topicName]});
+    async getPartitions(topicName) {
+        const topicMetadata = await this.admin.fetchTopicMetadata({ topics: [topicName]});
 
         return topicMetadata.topics[0].partitions;
+    }
+
+    async getTopics() {
+        return this.admin.listTopics();
     }
 
     async disconnect() {

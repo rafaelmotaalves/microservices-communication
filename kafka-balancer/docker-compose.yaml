@@ -6,6 +6,4 @@ services:
       dockerfile: Dockerfile
     environment:
       BOOTSTRAP_SERVER: "192.168.49.2:31151"
-      TOPIC_NAME: "shipments"
     network_mode: "host"
-
