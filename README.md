@@ -55,3 +55,40 @@ To teardown the application you can delete the created namespace:
 ```
     kubectl delete -f app/sock-shop-ns.yaml
 ```
+
+### To Deploy the communication monitor
+```
+    kubectl create namespace monitoring
+```
+
+```
+    kubectl apply -f kafka/monitoring/prometheus-setup/prometheus-operator-service-account.yaml -n monitoring
+```
+
+```
+    kubectl apply -f kafka/monitoring/prometheus-setup/prometheus-operator-cluster-role.yaml -n monitoring
+```
+
+```
+    kubectl apply -f kafka/monitoring/prometheus-setup/prometheus-operator-cluster-role-binding.yaml -n monitoring
+```
+
+```
+    kubectl apply -f kafka/monitoring/prometheus-setup/prometheus-operator-deployment.yaml -n monitoring
+```
+
+```
+    kubectl apply -f kafka/monitoring/strimzi-service-monitor.yaml -n monitoring
+```
+
+```
+    kubectl apply -f kafka/monitoring/prometheus-rules.yaml -n monitoring
+```
+
+```
+    kubectl apply -f kafka/monitoring/prometheus.yaml -n monitoring
+```
+
+```
+    kubectl port-forward prometheus-prometheus-0 9090:9090 -n monitoring
+```
