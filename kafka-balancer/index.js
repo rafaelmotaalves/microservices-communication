@@ -22,7 +22,7 @@ const kafka = new Kafka({
 
         const partitionsReassignment = balancePartitions(brokers, partitions);
 
-        const result = await reassignPartitions(BOOTSTRAP_SERVER, partitionsReassignment, TOPIC_NAME);
+        const result = await reassignPartitions(BOOTSTRAP_SERVER, TOPIC_NAME, partitionsReassignment);
 
         console.log(result);
     } catch (err) {

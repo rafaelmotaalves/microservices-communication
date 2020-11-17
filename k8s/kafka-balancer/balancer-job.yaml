@@ -14,6 +14,6 @@ spec:
         - name: BOOTSTRAP_SERVER
           value: "cluster-kafka-bootstrap:9092"
         - name: TOPIC_NAME
-          value: "my-topic"
+          value: "shipments"
       restartPolicy: Never
   backoffLimit: 4

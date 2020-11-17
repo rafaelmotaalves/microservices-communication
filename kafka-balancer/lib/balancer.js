@@ -19,7 +19,7 @@ function balancePartitions(brokers, partitions) {
             unallocatedPartitions = unallocatedPartitions.concat(broker.partitions.slice(expectedPartitionQuantity, broker.partitions.length));
         } else if (broker.partitions.length < expectedPartitionQuantity) {
             const quantityNeeded = expectedPartitionQuantity - broker.partitions.length
-            addedPartitions = unallocatedPartitions.splice(0, quantityNeeded + 1)
+            addedPartitions = unallocatedPartitions.splice(0, quantityNeeded)
 
             newAllocatedPartitions = broker.partitions.concat(addedPartitions)
         }
