@@ -71,9 +71,9 @@ spec:
     - namespace: comm-infra
       name: alertmanager
       port: alertmanager
-  # additionalScrapeConfigs:
-  #   name: additional-scrape-configs
-  #   key: prometheus-additional.yaml
+  additionalScrapeConfigs:
+    name: additional-scrape-configs
+    key: prometheus-additional.yaml
 ---
 apiVersion: v1
 kind: Service

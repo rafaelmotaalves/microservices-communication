@@ -62,6 +62,10 @@ To teardown the application you can delete the created namespace:
 ```
 
 ```
+    kubectl apply -f monitoring-namespace.yml
+```
+
+```
     kubectl apply -f kafka/monitoring/prometheus-setup/prometheus-operator-service-account.yaml -n monitoring
 ```
 
@@ -86,9 +90,32 @@ To teardown the application you can delete the created namespace:
 ```
 
 ```
+    kubectl create secret generic alertmanager-alertmanager --from-file=monitoring/alertmanager-setup/alertmanager.yaml -n monitoring
+
+```
     kubectl apply -f kafka/monitoring/prometheus.yaml -n monitoring
 ```
 
 ```
     kubectl port-forward prometheus-prometheus-0 9090:9090 -n monitoring
+```
+
+```
+    kubectl create secret generic alertmanager-alertmanager --from-file=kafka/monitoring/alertmanager-setup/alertmanager.yaml -n monitoring
+```
+
+```
+    kubectl apply -f kafka/monitoring/alertmanager-setup/alert-manager.yaml
+```
+
+```
+    kubectl apply -f kafka/monitoring/grafana.yaml -n monitoring
+```
+
+```
+    kubectl apply -f kafka/monitoring/grafana.yaml -n monitoring
+```
+
+```
+    kubectl port-forward grafana-5468f476d9-xh79f 3000:3000 -n monitoring
 ```
