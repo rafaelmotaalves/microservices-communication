@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kafka-balancer
+  namespace: comm-infra
+spec:
+  template:
+    spec:
+      containers:
+      - name: kafka-balancer
+        image: kafka-balancer
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: BOOTSTRAP_SERVER
+          value: "cluster-kafka-bootstrap:9092"
+      restartPolicy: Never
+  backoffLimit: 4
