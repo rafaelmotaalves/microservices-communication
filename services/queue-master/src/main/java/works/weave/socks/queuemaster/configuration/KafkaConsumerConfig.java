@@ -10,6 +10,9 @@ import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
+import works.weave.socks.shipping.entities.Shipment;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +35,7 @@ public class KafkaConsumerConfig {
     props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
       StringDeserializer.class);
     props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-            StringDeserializer.class);
+            JsonDeserializer.class);
     return props;
   }
 
@@ -44,7 +47,7 @@ public class KafkaConsumerConfig {
   @Bean
   public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
     ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
-    factory.setConsumerFactory(consumerFactory());
+    factory.setConsumerFactory(consumerFactory(), new StringDeserializer(), new JsonDeserializer<>(Shipment.class));
 
     return factory;
   }

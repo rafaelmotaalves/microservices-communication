@@ -5,6 +5,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import works.weave.socks.shipping.entities.Shipment;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,7 +36,7 @@ class KafkaProducerConfig {
     props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
       StringSerializer.class);
     props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-      StringSerializer.class);
+      JsonSerializer.class);
     return props;
   }
 
