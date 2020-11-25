@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 public class EventListener {
   private final Logger LOG = LoggerFactory.getLogger(getClass());
 
-  @KafkaListener(topics = "shipping-task", groupId = "queuemaster-group")
+  @KafkaListener(topics = "shipping-task", groupId = "queue-master-group")
   public void listen(ConsumerRecord<?, ?> cr) throws Exception {
-    LOG.info(cr.toString());
+    LOG.info(cr.value().toString());
   }
 }
