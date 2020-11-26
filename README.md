@@ -18,16 +18,20 @@ After the cluster has started execute the following command with to create the `
     kubectl create -f comm-infra-ns.yaml
 ```
 
-To install the helm dependencies execute:
-
+To install [Strimzi](https://strimzi.io/) execute:
 ```
-    helm dependency build
+    ./install_strimzi.sh
 ```
 
 To deploy kafka execute:
 
 ```
-    kubectl create -f kafka
+    kubectl create -f kafka/cluster.yaml
+```
+
+To create a topic execute:
+```
+    kubectl create -f kakfa/topics/<topic-file>
 ```
 
 To teardown the application you can delete the created namespace:
