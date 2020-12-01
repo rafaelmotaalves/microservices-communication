@@ -24,6 +24,11 @@ To install the helm dependencies execute:
     helm dependency build
 ```
 
+To build the local containers and send them to minikube execute in the root dir:
+```
+    ./build.sh
+```
+
 To deploy kafka execute:
 
 ```
