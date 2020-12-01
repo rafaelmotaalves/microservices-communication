@@ -19,11 +19,8 @@ import java.util.Map;
 @RestController
 public class ShippingController {
 
-    //@Autowired
-    //RabbitTemplate rabbitTemplate;
     @Autowired
-	KafkaTemplate<String, Shipment> shipmentKafkaTemplate;
-
+	  KafkaTemplate<String, String> shipmentKafkaTemplate;
 
     @RequestMapping(value = "/shipping", method = RequestMethod.GET)
     public String getShipping() {
@@ -42,7 +39,7 @@ public class ShippingController {
     Shipment postShipping(@RequestBody Shipment shipment) {
         System.out.println("Adding shipment to queue...");
         try {
-            shipmentKafkaTemplate.send("shipping-task", shipment);
+            shipmentKafkaTemplate.send("shipping-task", shipment.toString());
             //rabbitTemplate.convertAndSend("shipping-task", shipment);
         } catch (Exception e) {
             System.out.println("Unable to add to queue (the queue is probably down). Accepting anyway. Don't do this " +
@@ -60,22 +57,7 @@ public class ShippingController {
         List<HealthCheck> healthChecks = new ArrayList<HealthCheck>();
         Date dateNow = Calendar.getInstance().getTime();
 
-        // HealthCheck rabbitmq = new HealthCheck("shipping-rabbitmq", "OK", dateNow);
         HealthCheck app = new HealthCheck("shipping", "OK", dateNow);
-
-        // try {
-        //     this.rabbitTemplate.execute(new ChannelCallback<String>() {
-        //         @Override
-        //         public String doInRabbit(Channel channel) throws Exception {
-        //             Map<String, Object> serverProperties = channel.getConnection().getServerProperties();
-        //             return serverProperties.get("version").toString();
-        //         }
-        //     });
-        // } catch ( AmqpException e ) {
-        //     rabbitmq.setStatus("err");
-        // }
-
-        // healthChecks.add(rabbitmq);
         healthChecks.add(app);
 
         map.put("health", healthChecks);

@@ -18,10 +18,9 @@ After the cluster has started execute the following command with to create the `
     kubectl create -f comm-infra-ns.yaml
 ```
 
-To install the helm dependencies execute:
-
+To install [Strimzi](https://strimzi.io/) execute:
 ```
-    helm dependency build
+    ./install_strimzi.sh
 ```
 
 To build the local containers and send them to minikube execute in the root dir:
@@ -32,7 +31,12 @@ To build the local containers and send them to minikube execute in the root dir:
 To deploy kafka execute:
 
 ```
-    kubectl create -f kafka
+    kubectl create -f kafka/cluster.yaml
+```
+
+To create a topic execute:
+```
+    kubectl create -f kakfa/topics/<topic-file>
 ```
 
 To teardown the application you can delete the created namespace:
@@ -49,7 +53,8 @@ After the cluster has started execute the following command with to create the `
     kubectl create -f app/sock-shop-ns.yaml
 ```
 
-After the namespace is created, you can execute the following command to spawn the rest of the containers:
+After the namespace is created build the queue-master and shipping images are built, you can execute the following command to spawn the rest of the containers:
+
 
 ```
     kubectl create -f app/services
@@ -59,4 +64,10 @@ To teardown the application you can delete the created namespace:
 
 ```
     kubectl delete -f app/sock-shop-ns.yaml
+```
+
+### To Build the Services
+If need to build the custom services execute, go to the service directory and execute:
+```
+    GROUP=comm-infra COMMIT=1.0 ./scripts/build.sh
 ```

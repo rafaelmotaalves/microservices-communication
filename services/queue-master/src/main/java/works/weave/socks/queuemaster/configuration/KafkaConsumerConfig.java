@@ -1,44 +1,25 @@
 package works.weave.socks.queuemaster.configuration;
 
+import org.apache.kafka.clients.consumer.Consumer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import works.weave.socks.shipping.entities.Shipment;
+import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
-import org.springframework.kafka.support.converter.StringJsonMessageConverter;
-import org.springframework.kafka.support.serializer.JsonDeserializer;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
-import org.springframework.kafka.config.KafkaListenerContainerFactory;
-import org.springframework.kafka.core.ConsumerFactory;
-import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
-import org.springframework.kafka.support.converter.StringJsonMessageConverter;
-import org.springframework.kafka.support.serializer.JsonDeserializer;
-
-
+import works.weave.socks.queuemaster.EventListener;
 
 @Configuration
-class KafkaConsumerConfig {
+@EnableKafka
+public class KafkaConsumerConfig {
 
   @Value("${spring.kafka.bootstrap-servers}")
   private String bootstrapServers;
@@ -50,6 +31,8 @@ class KafkaConsumerConfig {
       bootstrapServers);
     props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
       StringDeserializer.class);
+    props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
+            StringDeserializer.class);
     return props;
   }
 
@@ -59,10 +42,17 @@ class KafkaConsumerConfig {
   }
 
   @Bean
-  public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> kafkaListenerContainerFactory() {
-    ConcurrentKafkaListenerContainerFactory<String, String> factory =
-      new ConcurrentKafkaListenerContainerFactory<>();
+  public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
+    ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
     factory.setConsumerFactory(consumerFactory());
+
     return factory;
   }
+
+  @Bean
+  public EventListener listener() {
+    System.out.println("LISTENER");
+    return new EventListener();
+  }
+
 }
